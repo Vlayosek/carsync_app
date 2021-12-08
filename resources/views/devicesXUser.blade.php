@@ -84,7 +84,7 @@
     $(document).ready( function () {
         $("#example1").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "excel", "pdf", "print", "colvis"],
+        "buttons": ["copy", "excel", "print", "colvis"],
         "language": {
                 "sProcessing":    "Procesando...",
                 "sLengthMenu":    "Mostrar _MENU_ registros",

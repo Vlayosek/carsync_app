@@ -78,7 +78,7 @@
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" value="abc1234" required autocomplete="password" readonly>
+                                <input id="password" type="password" class="form-control" name="password" value="Gps@1234" required autocomplete="password" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -98,13 +98,13 @@
                 </div>
             </div>
             <hr>
-            {{-- <div class="card">
+             <div class="card">
                 <div class="card-body">
                     <a class="btn btn-info" href="{{ route('home.devices') }}">Traer Dispositivos</a>
                     <a class="btn btn-info" href="{{ route('devices.index') }}">Ir a Listado Dispositivos</a>
                     <a class="btn btn-info" href="{{ route('alerts.index') }}">Traer Alertas</a>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 </div>

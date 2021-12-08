@@ -34,7 +34,7 @@ class Alert extends MongoModel
         'alertDescription',
         'temperatureSensorsId',
         'temperatureSensors',
-
+        'geofence'
     ];
 
     protected $casts = [

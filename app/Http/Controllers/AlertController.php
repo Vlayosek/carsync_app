@@ -6,6 +6,7 @@ use App\Models\Alert;
 use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class AlertController extends Controller
 {
@@ -62,8 +63,8 @@ class AlertController extends Controller
         $token = session('app.token');
         $userId = session('app.userId'); */
 
-        $from= '2020-11-01T00:00:00.00Z';
-        $to= '2020-11-30T23:59:59.59Z';
+        $from= '2021-12-01T00:00:00.00Z';
+        $to= '2021-12-07T23:59:59.59Z';
         $page = '0';
         $perPage ='50';
 
@@ -95,7 +96,7 @@ class AlertController extends Controller
 
         //SESION PLS INICIO
         $username = 'oscar.roditi@tpg.com.ec';
-        $password = 'abc1234';
+        $password = 'Gps@1234';
         $realm = 'fleet';
 
         $tokenPLS = session('app.tokenF');
@@ -134,11 +135,13 @@ class AlertController extends Controller
 
         $array = [];
 
+        //dd($devices);
+
         foreach($devices as $mydata){
 
             $device = $mydata->id_device;
-
-            $v_devide = 'CfDJ8BkoQ5vKuLJBvoUKFH2syyvrWlqd8AsrCB2WLCTQwbhSWd7Md4RtQTwjo5wuEe0xh8OCeXdfii5OqBfHlia8kfBCNlz4PgzaCdGvrSVOLKJ1SGacnjFXOMusMXoLiFG7xg';
+            //return $device;
+            //$v_device = 'CfDJ8BkoQ5vKuLJBvoUKFH2syytliieI10WsTJvhEUoyKh7uK63l1TlLUk4tr6f3Lj6O7cdYtqHfkEGU-oVuVga4HfLfeCTTbrNjUiTk6L856BxLrOiDVyAxHk68AR2jpRL8Sw';
 
             $page = '0';
 
@@ -146,12 +149,19 @@ class AlertController extends Controller
                 $response = Http::withHeaders([
                     'domain' => $domain,
                     'Authorization' => 'Bearer '. $tokenPLS.''
-                ])->get($baseUrl.'/'.$subdomain.'/devices/'.$v_devide.'/alerts?clientId='.$this->clientId.'&from='.$from.'&to='.$to.'&page='.$page.'&pageSize=50');
+                ])->get($baseUrl.'/'.$subdomain.'/devices/'.$device.'/alerts?clientId='.$this->clientId.'&from='.$from.'&to='.$to.'&page='.$page.'&pageSize=50');
 
 
                 $data = json_decode($response);
 
-                dd($data);
+                //dd($data->items);
+
+                /* Faltar filtrar por Ingreso a Muelle Norte
+                    Muelle
+                    Zona RTG
+                    Stacker
+                */
+
 
                 $total = $data->total;
                 // dd($total);
@@ -162,36 +172,46 @@ class AlertController extends Controller
 
                     foreach($data->items as $mydata){
 
-                        array_push($array, $mydata);
+                        $myString = $mydata->body->es;
 
-                        $alerts = new Alert();
-                        $alerts->messageKey = $array[$i]->messageKey;
-                        $alerts->tripNumber = $array[$i]->tripNumber;
-                        $alerts->imei = $array[$i]->imei;
-                        $alerts->address = $array[$i]->address;
-                        $alerts->generateTime = $array[$i]->generateTime;
-                        $alerts->messageTime = $array[$i]->messageTime;
-                        $alerts->deviceIncrementalMessageCounter = $array[$i]->deviceIncrementalMessageCounter;
-                        $alerts->addressStatus = $array[$i]->addressStatus;
-                        $alerts->heading = $array[$i]->heading;
-                        $alerts->lat = $array[$i]->lat;
-                        $alerts->lng = $array[$i]->lng;
-                        $alerts->speed = $array[$i]->speed;
-                        $alerts->isBuffer = $array[$i]->isBuffer;
-                        $alerts->alertId = $array[$i]->alertId;
-                        $alerts->body = $array[$i]->body;
-                        $alerts->alertDescription = $array[$i]->alertDescription;
-                        $alerts->temperatureSensorsId = $array[$i]->temperatureSensorsId;
-                        $alerts->temperatureSensors = $array[$i]->temperatureSensors;
-                        $alerts->save();
+                        $contains = Str::contains($myString, ['Ingreso a Muelle Norte', 'Muelle', 'Zona RTG','Stacker']);
 
-                        $i++;
+
+                        if($contains){
+
+                            array_push($array, $mydata);
+
+                            $alerts = new Alert();
+                            $alerts->messageKey = $array[$i]->messageKey;
+                            $alerts->tripNumber = $array[$i]->tripNumber;
+                            $alerts->imei = $array[$i]->imei;
+                            $alerts->address = $array[$i]->address;
+                            $alerts->generateTime = $array[$i]->generateTime;
+                            $alerts->messageTime = $array[$i]->messageTime;
+                            $alerts->deviceIncrementalMessageCounter = $array[$i]->deviceIncrementalMessageCounter;
+                            $alerts->addressStatus = $array[$i]->addressStatus;
+                            $alerts->heading = $array[$i]->heading;
+                            $alerts->lat = $array[$i]->lat;
+                            $alerts->lng = $array[$i]->lng;
+                            $alerts->speed = $array[$i]->speed;
+                            $alerts->isBuffer = $array[$i]->isBuffer;
+                            $alerts->alertId = $array[$i]->alertId;
+                            $alerts->body = $array[$i]->body;
+                            $alerts->alertDescription = $array[$i]->alertDescription;
+                            $alerts->temperatureSensorsId = $array[$i]->temperatureSensorsId;
+                            $alerts->temperatureSensors = $array[$i]->temperatureSensors;
+                            $alerts->geofence = 'cualquier cosa';
+                            $alerts->save();
+
+                            $i++;
+                        }
 
                     }
 
                     $page++;
 
                 }
+
             }while($total!=0);
 
         }

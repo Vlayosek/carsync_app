@@ -52,7 +52,7 @@ class HomeController extends Controller
 
     public function getClientUserID(Request $request){
 
-
+        //dd($request);
         $token = session('app.token');
 
         if($token == null){
@@ -79,6 +79,8 @@ class HomeController extends Controller
             'password' => $password,
             'subdomain' => $realm
         ]);
+
+        //return $response->body();
 
         $this->clientId = $response['clientId'];
         $this->userId = $response['userId'];
@@ -132,6 +134,7 @@ class HomeController extends Controller
 
         $data = json_decode($response);
 
+        //dd($data);
         $array = [];
         $arrayIds = [];
         $item = collect();

@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION_MDB', 'mongodb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
             'prefix_indexes' => true,
         ],
 
-        'mongodbl' => [
+        /* 'mongodb' => [
             'driver' => 'mongodb',
             'host' => env('DB_HOST_MDBL', 'localhost'),
             'port' => env('DB_PORT_MDBL', 27017),
@@ -99,9 +99,9 @@ return [
             'username' => env('DB_USERNAME_MDBL'),
             'password' => env('DB_PASSWORD_MDBL'),
             'options' => [
-                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
+                //'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
             ]
-        ],
+        ], */
 
         'mongodb' => [
             'driver' => 'mongodb',
